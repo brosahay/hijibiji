@@ -16,31 +16,23 @@ class MetaData{
 	long long int noOfBlocks;
 	//vector<string> blockHash;
 
-	//Functionc
+	//Function
 	bool verifyHash(string fileName);
 	void writeMetaData(string fileName);
 	MetaData readMetaData(string fileName);
 
-    // Insertion operator
-	friend ostream& operator<<(ostream& os, const MetaData& s)
-	{
+  // Insertion operator
+	friend ostream& operator<<(ostream& os, const MetaData& s){
 		os << s.fileName << '\n';
 		os << s.fileSize << '\n';
 		os << s.fileHash << '\n';
 		os << s.lastUpdated << '\n';
 		os << s.noOfBlocks << '\n';
-		/*for(int i = 0; i<s.noOfBlocks; i++)
-		{
-            os << s.blockHash[i];
-            if(i!=s.noOfBlocks-1)
-                os<<'\n';
-		}*/
 		return os;
 	}
 
 	// Extraction operator
-	friend istream& operator>>(istream& is, MetaData& s)
-	{
+	friend istream& operator>>(istream& is, MetaData& s){
 		string str;
 		getline(is, str, '\n');
 		s.fileName=str;
@@ -48,12 +40,6 @@ class MetaData{
 		is >> s.fileHash;
 		is >> s.lastUpdated;
 		is >> s.noOfBlocks;
-		/*string temp;
-		for(int i = 0; i<s.noOfBlocks; i++)
-		{
-            is >> temp;
-            s.blockHash.push_back(temp);
-		}*/
 		return is;
 	}
 };

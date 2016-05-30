@@ -1,4 +1,4 @@
- /* JSON File : https://github.com/nlohmann/json */
+/* JSON File : https://github.com/nlohmann/json */
 #include <iostream>
 #include <map>
 #include <string>
@@ -34,13 +34,12 @@ map<string, FileDetailsList> localFileList;
 class FileList
 {
 public:
-	void printMap(std::map<string,FileDetailsList> m) {
+	void printMap(std::map<string,FileDetailsList> m){
 		FileDetailsList tmp;
 		string filename;
 		long long int size;
 		string ip,ip2;
-		if(DEBUG)
-		{
+		if(DEBUG){
 			cout<<"Map size : "<<m.size()<<endl;
 			cout<<"Printing File Map : "<<endl; 
 		}
@@ -48,8 +47,7 @@ public:
 			tmp = it->second;
 			filename = tmp.filename;
 			size = tmp.size;
-			if(DEBUG)
-			{
+			if(DEBUG){
 				cout<<"Number of sources : "<<tmp.source.size()<<endl;
 				cout << it->first<<":"<<filename<<":"<<size<<":";
 				for(vector<string>::iterator it=tmp.source.begin();it!=tmp.source.end();++it){
@@ -59,8 +57,6 @@ public:
 			}
 		}
 	}
-
-
 	// Parse json from source and returns the corresponding map
 	map<string, FileDetailsList> loadFileListString(const string* jsonString,const string* sourceIP){
 
@@ -88,38 +84,28 @@ public:
 
 	// Reads in a map of file list and returns a string in json format to be sent over the network
 	string dumpFileListString(const map <string,FileDetailsList> *fileList){
-
 		json j;
-
 		string hash, filename;
 		long long int size;
 		FileDetailsList tmp;
-		
-
 		for(std::map<string,FileDetailsList>::const_iterator it=fileList->begin();it!=fileList->end();++it){
 			hash = it->first;
 			tmp = it->second;
-
 			filename = tmp.filename;
 			size = tmp.size;
-
 			j[hash] = { {"filename" , filename}, {"size", size} };
-
 		}
 		return j.dump();
 	}
-
 	// Return true if i and j are equal
 	bool equality(string i, string j){
-		if (DEBUG)
-		{
+		if (DEBUG){
 			cout<<"Testing for "<<i<<" and "<<j<<endl;
 			cout<<"Result : "<<i.compare(j)<<endl;
 		}
 		if(!i.compare(j))
 			return true;
 		return false;
-	//	return (!i.compare(j));
 	}
 
 	// Generate self file list
@@ -135,20 +121,15 @@ public:
 		map<string, FileDetailsList> selfFileList;
 		// Prepare list of files
 		vector<string> fileList = obj.getFilesInDirectory();
-		if(DEBUG)		
-		{
-			//cout<<"Number of files in directory : "<<fileList.size()<<endl;
+		if(DEBUG)		{
+			cout<<"Number of files in directory : "<<fileList.size()<<endl;
 		}
 		// For each file, populate the map with hash, filename and size
-		for(int i=0; i<fileList.size(); i++){
+		for(unsigned int i=0; i<fileList.size(); i++){
 			filename = fileList[i];
 			hash = obj.getMD5OfFile(filename);
 			sizeAndBlock = obj.getSizeAndNoOfBlocks(filename);
-			size = sizeAndBlock.first;
-			// For testing purpose : Pass ip as string args and uncomment lines below, modify item structure.
-			// source.clear();
-			// source.push_back(ip);
-			
+			size = sizeAndBlock.first;			
 			item = {filename, size};
 			selfFileList[hash] = item;
 			if(DEBUG){
@@ -169,9 +150,8 @@ public:
 		FileDetailsList tmp;
 		int newFiles = 0;
 		map<string, FileDetailsList> selfFileList = prepareSelfFileList();
-		if(DEBUG)
-		{
-			cout<<"Attempting to merge file lists"<<endl;
+		if(DEBUG){
+			cout<<"Attempting to merge file lists."<<endl;
 		}
 		for(map<string,FileDetailsList>::iterator it=remoteFileList->begin();it!=remoteFileList->end();++it){
 			hash = it->first;
@@ -200,15 +180,13 @@ public:
 				localFileList[hash]=tmp;
 			}
 		}
-		if(newFiles>0)
-		{
-			//cout<<"\r";
-			//cout<<"Enter index of the file to be downloaded (0 to cancel): ";
-			//cout<<endl;
-			//cout<<"New files have been added to list.\n"<<endl;			
-		}				
+		if(DEBUG && newFiles>0){
+			cout<<"\r";
+			cout<<"Enter index of the file to be downloaded (0 to cancel): ";
+			cout<<endl;
+			cout<<"New files have been added to list.\n"<<endl;			
+		}
 	}
-
 
 	// Broadcast the FileList
 	void broadcastFileList(){
@@ -229,40 +207,25 @@ public:
 
 	//Listen for broadcasting FileList
 	void startListeningBroadcast(){
-	  //UDP socket
+		//UDP socket
 		ConnectionManager listner(false, BROADCAST_PORT);
-	  //Bind port and listen
+		//Bind port and listen
 		listner.startServer();
-		for(;;)
-		{
-	    //catch broadcasting packet
+		for(;;){
+			//catch broadcasting packet
 			pair <string,string> sourceDatagram;
 			sourceDatagram= listner.readDatagram();
 			string jsonString;
-	  	//returns Corresponding Broadcast IP
+			//returns Corresponding Broadcast IP
 			string sourceIP = string(sourceDatagram.first);
-	    //returns DataString
+			//returns DataString
 			jsonString = sourceDatagram.second;		
 			map<string, FileDetailsList> remoteFileList=loadFileListString(&jsonString,&sourceIP);
 			mergeFileList(&remoteFileList);
 			if(DEBUG){
 				cout<<"Broadcast Source IP :"<<sourceIP;
 			}
-	    //relay to be processed
-
+			//relay to be processed
 		}
 	}
 };
-/*int main(){
-	char ch;
-	cin>>ch;
-	switch(ch){
-		case 's':
-		broadcastFileList();
-		break;
-		case 'r':
-		startListeningBroadcast();
-		break;
-	}
-	return 0;
-}*/
