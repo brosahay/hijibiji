@@ -1,2 +1,2 @@
 # lansync
-Final Year Project
+LAN Server based on P2P Model
