@@ -35,7 +35,7 @@ extern long long int downloaded;
 
 class ConnectionManager{
 	private:
-		unsigned int socket_descriptor;
+		int socket_descriptor;
 		bool is_tcp;
 		unsigned int listening_port;
 		unsigned int remote_port;
