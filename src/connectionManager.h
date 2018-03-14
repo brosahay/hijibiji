@@ -25,9 +25,6 @@ class ConnectionManager{
 		unsigned int number_of_connections;
 		char* buffer;
 		char* data;
-
-
-
 	public:
 		ConnectionManager(bool is_tcp=true, unsigned int listening_port=LISTENINGPORT, string ip_address=LOCALHOST);		
 		void init();
@@ -38,13 +35,9 @@ class ConnectionManager{
 		void sendDataToServer(char* data);
 		void sendDatagramToServer(char* data, string remote_ip_address=REMOTE, unsigned int remote_port=LISTENINGPORT);
 		void getServerDetails();
-		void getClientDetails();		
-		//void joinMulticastGroup(string ip);
-		//void setMulticastLoopback(bool set=false);
-		void broadcast(char* data);		
+		void getClientDetails();	
+		void broadcast(char* data);	
 		void split(string s, vector<string>&v, string delimiters);
-		//void startPasscodeAuthenticator(string passcode);
-
 };
 
 #endif

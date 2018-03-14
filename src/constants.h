@@ -1,9 +1,9 @@
 #ifndef __CONSTANTS_H_INCLUDED__
 #define __CONSTANTS_H_INCLUDED__
 
-#define BUFFER_SIZE 1048576 //1048576
-#define BLOCK_SIZE 1048576 //1048576
-#define BROADCAST_IP "255.255.255.255"
+#define BUFFER_SIZE 1048576
+#define BLOCK_SIZE 1048576
+#define BROADCAST_IP "255.255.255.255" //replace this with subnet BROADCAST_IP ref:http://stackoverflow.com/questions/11215605/finding-subnet-mask-on-linux-in-c
 #define BROADCAST_PORT 9091
 #define BROADCAST_INTERVAL 30
 
@@ -31,5 +31,3 @@ const string META_EXTENSION = ".meta";
 const string P2P_EXTENSION = ".prv";
 
 #endif
-
-//1048576
