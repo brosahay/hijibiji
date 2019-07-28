@@ -14,9 +14,9 @@ class Utils
 	string getMD5(string text);
 	vector<string> getMD5OfAllBlocks(string filename);
 	string getMD5OfFile(string filename);
-	void updateFilesList();	
-	bool isRegularFile(const char *path);
-	bool equality(string i, string j);
+	void writeMetaData(string fileName);
+	MetaData readMetaData(string fileName);
+	void updateFilesList();
 };
 
 #endif
