@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "cerrno": "cpp"
+    },
+    "editor.formatOnSave": true
+}
